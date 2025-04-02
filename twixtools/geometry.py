@@ -29,15 +29,33 @@ def quat_to_rotmat(scalar, i, j, k):
     return mat
 
 
+# def parse_slice_order(twix):
+#     order = None
+#     print(twix['hdr']['Config']['chronSliceIndices'])
+#     print(str.split(twix['hdr']['Config']['chronSliceIndices']))
+#     print(int(twix['hdr']['MeasYaps']['sSliceArray']['lSize']))
+#     if '-' != twix['hdr']['Config']['chronSliceIndices'][0]:
+#         order = []
+#         for x in twix['hdr']['Config']['chronSliceIndices']:
+#             print(x)
+#             if len(order) == int(twix['hdr']['MeasYaps']['sSliceArray']['lSize']):
+#                 break
+#             if x == ' ':
+#                 continue
+#             val = int(x)
+#             order.append(val)
+#     return order
+
 def parse_slice_order(twix):
     order = None
+    # print(twix['hdr']['Config']['chronSliceIndices'])
+    chronsliceindices=str.split(twix['hdr']['Config']['chronSliceIndices'])
     if '-' != twix['hdr']['Config']['chronSliceIndices'][0]:
         order = []
-        for x in twix['hdr']['Config']['chronSliceIndices']:
+        for x in chronsliceindices:
+            # print(x)
             if len(order) == int(twix['hdr']['MeasYaps']['sSliceArray']['lSize']):
                 break
-            if x == ' ':
-                continue
             val = int(x)
             order.append(val)
     return order
@@ -48,6 +66,7 @@ def prs2sct_mdb(twix, sliceno):
 
     # match chronological and normal slice order:
     order = parse_slice_order(twix)
+    print(order)
     if order:
         lookup = { x: i for i, x in enumerate(order) }
         original_index = sliceno
@@ -94,6 +113,8 @@ class Geometry:
     @staticmethod
     def create_for_all_slices(twix):
         slices = len(twix["hdr"]["MeasYaps"]["sSliceArray"]["asSlice"])
+        print(twix["hdr"]["MeasYaps"]["sSliceArray"]["asSlice"])
+        print(slices)
         return [Geometry(twix, n_slice=i) for i in range(slices)]
 
     def __init__(self, twix, n_slice=None):
