@@ -29,36 +29,38 @@ def quat_to_rotmat(scalar, i, j, k):
     return mat
 
 
-# def parse_slice_order(twix):
-#     order = None
-#     print(twix['hdr']['Config']['chronSliceIndices'])
-#     print(str.split(twix['hdr']['Config']['chronSliceIndices']))
-#     print(int(twix['hdr']['MeasYaps']['sSliceArray']['lSize']))
-#     if '-' != twix['hdr']['Config']['chronSliceIndices'][0]:
-#         order = []
-#         for x in twix['hdr']['Config']['chronSliceIndices']:
-#             print(x)
-#             if len(order) == int(twix['hdr']['MeasYaps']['sSliceArray']['lSize']):
-#                 break
-#             if x == ' ':
-#                 continue
-#             val = int(x)
-#             order.append(val)
-#     return order
-
 def parse_slice_order(twix):
+    print("Old - Parsing slice order...")
     order = None
-    # print(twix['hdr']['Config']['chronSliceIndices'])
-    chronsliceindices=str.split(twix['hdr']['Config']['chronSliceIndices'])
+    print(twix['hdr']['Config']['chronSliceIndices'])
+    print(str.split(twix['hdr']['Config']['chronSliceIndices']))
+    print(int(twix['hdr']['MeasYaps']['sSliceArray']['lSize']))
     if '-' != twix['hdr']['Config']['chronSliceIndices'][0]:
         order = []
-        for x in chronsliceindices:
-            # print(x)
+        for x in twix['hdr']['Config']['chronSliceIndices']:
+            print(x)
             if len(order) == int(twix['hdr']['MeasYaps']['sSliceArray']['lSize']):
                 break
+            if x == ' ':
+                continue
             val = int(x)
             order.append(val)
     return order
+
+# def parse_slice_order(twix):
+#     print("New - Parsing slice order...")
+#     order = None
+#     # print(twix['hdr']['Config']['chronSliceIndices'])
+#     chronsliceindices=str.split(twix['hdr']['Config']['chronSliceIndices'])
+#     if '-' != twix['hdr']['Config']['chronSliceIndices'][0]:
+#         order = []
+#         for x in chronsliceindices:
+#             # print(x)
+#             if len(order) == int(twix['hdr']['MeasYaps']['sSliceArray']['lSize']):
+#                 break
+#             val = int(x)
+#             order.append(val)
+#     return order
 
 
 def prs2sct_mdb(twix, sliceno):
