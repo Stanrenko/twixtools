@@ -1,9 +1,12 @@
 import numpy as np
 try:
     import pkg_resources
+    scipy_version = pkg_resources.get_distribution("scipy").version
 except:
     import importlib.resources as pkg_resources
-scipy_version = pkg_resources.get_distribution("scipy").version
+    from importlib.metadata import version
+    scipy_version = version("scipy")
+
 if scipy_version >= '1.14.0':
     from scipy.integrate import cumulative_trapezoid as cumtrapz
 else:
